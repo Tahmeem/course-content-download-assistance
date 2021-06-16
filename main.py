@@ -34,46 +34,14 @@ try:
     for linkClass in linkClasses:
         try:
             url = linkClass.find_element_by_tag_name("a").get_attribute("href")
+            pageName = linkClass.find_element_by_tag_name("a").get_attribute("text")
             linkClass.find_element_by_tag_name("a").click()
-            urllib.request.urlretrieve(url, r"C:\Users\tahme\Downloads\New.pdf")
+            urllib.request.urlretrieve(url, rf"C:\Users\tahme\Downloads\{pageName}.pdf")
             print("File downloaded")
         except:
             continue
-finally:
-    print("Lets check")
+except:
+    print("Course does not have resources in skule website")
 
-    # driver.quit()
-# if checkForCourse != "":
-#     courseValid = checkForCourse.text
-#     if courseValid == "Sorry, no results matched your search.":
-#             print("Course resources not available in Skule website")
-#             driver.quit()
-
-
-# try:
-#     print("Reached here")
-#     Links = WebDriverWait(driver, 10).until(
-#      EC.presence_of_element_located((By.LINK_TEXT, '" Past Exams "'))
-#     )
-#     print("Reached this place too")
-#     Links.click()
-# finally:
-#     driver.quit()
-
-# downloadbtn  = driver.find_element_by_id('download').find_elements_by_tag_name('icon-icon')
-# downloadbtn.send_keys(Keys.RETURN)
-#
-# searhcFind = driver.find_element_by_name('s')
-# searhcFind.send_keys('django')
-# searhcFind.send_keys(Keys.RETURN)
-#
-# try:
-#     main = WebDriverWait(driver, 10).until(
-#         EC.presence_of_element_located((By.ID, "main"))
-#     )
-#     articles = main.find_elements_by_tag_name('article')
-#     for article in articles:
-#         header = article.find_element_by_tag_name("p")
-#         print(header.text)
-# finally:
-#     driver.quit()
+time.sleep(3)
+driver.quit()
