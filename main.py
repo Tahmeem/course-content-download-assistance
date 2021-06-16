@@ -31,11 +31,13 @@ try:
     linkClasses = WebDriverWait(driver, 5).until(
         EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.result.col-12'))
     )
-    print(linkClasses)
     for linkClass in linkClasses:
-        if linkClass.find_elements_by_tag_name('h3') != []:
+        try:
+            url = linkClass.find_element_by_tag_name("a").get_attribute("href")
             linkClass.find_element_by_tag_name("a").click()
-        else:
+            urllib.request.urlretrieve(url, r"C:\Users\tahme\Downloads\New.pdf")
+            print("File downloaded")
+        except:
             continue
 finally:
     print("Lets check")
@@ -46,11 +48,6 @@ finally:
 #     if courseValid == "Sorry, no results matched your search.":
 #             print("Course resources not available in Skule website")
 #             driver.quit()
-
-newurl = "http://exams.skule.ca/exams/bulk/20191/CIV100S_2019_MECHANICS_E.pdf"
-urllib.request.urlretrieve(newurl,r"C:\Users\tahme\Downloads\New.pdf")
-
-print("File downloaded")
 
 
 # try:
