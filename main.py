@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import urllib.request
 import time
+from selenium.webdriver.common.action_chains import ActionChains
 course = input("Enter course code: ")
 
 PATH = r"C:\Users\tahme\PycharmProjects\LoginAssistance\chromedriver.exe"
@@ -32,13 +33,23 @@ try:
         EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.result.col-12'))
     )
     for linkClass in linkClasses:
+        # print(linkClass)
         try:
             url = linkClass.find_element_by_tag_name("a").get_attribute("href")
             pageName = linkClass.find_element_by_tag_name("a").get_attribute("text")
-            linkClass.find_element_by_tag_name("a").click()
+            link = linkClass.find_element_by_tag_name("a")
+            link.context_click()
+            actions = ActionChains(driver)
+            actions.send_keys(Keys.ARROW_DOWN)
+            actions.send_keys(Keys.RETURN)
+            actions.send_keys(Keys.CONTROL+"tab")
+            actions.perform()
             urllib.request.urlretrieve(url, rf"C:\Users\tahme\Downloads\{pageName}.pdf")
-            print("File downloaded")
-        except:
+            secondActions = ActionChains(driver)
+            secondActions.send_keys(Keys.CONTROL+"w")
+            secondActions.perform()
+        except Exception as e:
+            print(e)
             continue
 except:
     print("Course does not have resources in skule website")
