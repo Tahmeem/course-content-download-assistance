@@ -36,20 +36,32 @@ try:
         )
     MainLink.click()
     try:
-        linkClasses = WebDriverWait(driver, 5).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.result.col-12'))
+        listHeader = WebDriverWait(driver, 5).until(
+             EC.presence_of_element_located((By.ID, 'y-sidebar'))
         )
-        for linkClass in linkClasses:
-            # print(linkClass)
-            try:
-                url = linkClass.find_element_by_tag_name("a").get_attribute("href")
-                pageName = linkClass.find_element_by_tag_name("a").get_attribute("text")
-                urllib.request.urlretrieve(url, rf"C:\Users\tahme\Downloads\{pageName}.pdf")
-            except:
-                continue
-    except:
+        # listHeader.click()
+        # list = driver.find_element_by_tag_name('ul')
+        # list.click()
+        driver.implicitly_wait(3)
+        active = listHeader.find_elements_by_tag_name('li')
+        for year in active:
+            year.click()
+            linkClasses = WebDriverWait(driver, 5).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.result.col-12'))
+            )
+            for linkClass in linkClasses:
+                try:
+                    url = linkClass.find_element_by_tag_name("a").get_attribute("href")
+                    pageName = linkClass.find_element_by_tag_name("a").get_attribute("text")
+                    urllib.request.urlretrieve(url, rf"C:\Users\tahme\Downloads\{pageName}.pdf")
+                except Exception as e:
+                    print(e)
+                    continue
+            driver.implicitly_wait(10)
+    except Exception as e:
+        print(e)
         print("This course might have multiple course pages or a page with no resources. Please check again in course site and enter exact course code with name")
 except:
     print("Course does not have resources in skule website")
 
-driver.quit()
+#driver.quit()
