@@ -7,11 +7,17 @@ import urllib.request
 import time
 from selenium.webdriver.common.action_chains import ActionChains
 course = input("Enter course code: ")
+seeWindow = input("Do you want to see the window?(yes/no) ")
 
 PATH = r"C:\Users\tahme\PycharmProjects\LoginAssistance\chromedriver.exe"
 driver = webdriver.Chrome(PATH)
+if seeWindow == "yes":
+    driver.maximize_window()
+else:
+    driver.minimize_window()
 
 driver.get("https://skule.ca/")
+
 coursesWebsite = ""
 aTags = driver.find_elements_by_tag_name("a")
 for aTag in aTags:
@@ -29,30 +35,21 @@ try:
         EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, f'{course}'))
         )
     MainLink.click()
-    linkClasses = WebDriverWait(driver, 5).until(
-        EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.result.col-12'))
-    )
-    for linkClass in linkClasses:
-        # print(linkClass)
-        try:
-            url = linkClass.find_element_by_tag_name("a").get_attribute("href")
-            pageName = linkClass.find_element_by_tag_name("a").get_attribute("text")
-            link = linkClass.find_element_by_tag_name("a")
-            link.context_click()
-            actions = ActionChains(driver)
-            actions.send_keys(Keys.ARROW_DOWN)
-            actions.send_keys(Keys.RETURN)
-            actions.send_keys(Keys.CONTROL+"tab")
-            actions.perform()
-            urllib.request.urlretrieve(url, rf"C:\Users\tahme\Downloads\{pageName}.pdf")
-            secondActions = ActionChains(driver)
-            secondActions.send_keys(Keys.CONTROL+"w")
-            secondActions.perform()
-        except Exception as e:
-            print(e)
-            continue
+    try:
+        linkClasses = WebDriverWait(driver, 5).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.result.col-12'))
+        )
+        for linkClass in linkClasses:
+            # print(linkClass)
+            try:
+                url = linkClass.find_element_by_tag_name("a").get_attribute("href")
+                pageName = linkClass.find_element_by_tag_name("a").get_attribute("text")
+                urllib.request.urlretrieve(url, rf"C:\Users\tahme\Downloads\{pageName}.pdf")
+            except:
+                continue
+    except:
+        print("This course might have multiple course pages or a page with no resources. Please check again in course site and enter exact course code with name")
 except:
     print("Course does not have resources in skule website")
 
-time.sleep(3)
 driver.quit()
