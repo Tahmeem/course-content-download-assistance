@@ -5,7 +5,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import urllib.request
 import time
-from selenium.webdriver.common.action_chains import ActionChains
 course = input("Enter course code: ")
 seeWindow = input("Do you want to see the window?(yes/no) ")
 
@@ -39,13 +38,11 @@ try:
         listHeader = WebDriverWait(driver, 5).until(
              EC.presence_of_element_located((By.ID, 'y-sidebar'))
         )
-        # listHeader.click()
-        # list = driver.find_element_by_tag_name('ul')
-        # list.click()
         driver.implicitly_wait(3)
         active = listHeader.find_elements_by_tag_name('li')
         for year in active:
             year.click()
+            time.sleep(1)
             linkClasses = WebDriverWait(driver, 5).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.result.col-12'))
             )
@@ -55,13 +52,10 @@ try:
                     pageName = linkClass.find_element_by_tag_name("a").get_attribute("text")
                     urllib.request.urlretrieve(url, rf"C:\Users\tahme\Downloads\{pageName}.pdf")
                 except Exception as e:
-                    print(e)
                     continue
-            driver.implicitly_wait(10)
-    except Exception as e:
-        print(e)
+    except:
         print("This course might have multiple course pages or a page with no resources. Please check again in course site and enter exact course code with name")
 except:
     print("Course does not have resources in skule website")
-
-#driver.quit()
+finally:
+    driver.quit()
