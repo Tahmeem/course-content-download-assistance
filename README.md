@@ -17,7 +17,7 @@ Download ChromeDriver 91.0.4472.101
 
 # Demo
 
-![Demo Video](./Assets/01-44-34.mp4)
+![Demo Video](./Assets/demo.gif)
 
 # Resources
 Selenium: https://selenium-python.readthedocs.io/
