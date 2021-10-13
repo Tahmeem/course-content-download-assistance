@@ -18,7 +18,7 @@ window.configure(background="black")
 window.geometry("600x400")
 
 #Main image
-bigPhoto = PhotoImage(file="Images/MainImage.PNG")
+bigPhoto = PhotoImage(file="Assets/MainImage.PNG")
 windowImage = Label(window, image=bigPhoto, bg="white", borderwidth=0, highlightthickness=0)
 windowImage.place(x=300, y=50, anchor="center")
 
